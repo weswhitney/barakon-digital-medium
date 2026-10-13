@@ -1,0 +1,220 @@
+.keys-container {
+  position: absolute;
+  top: 1cqw;
+  left: 1cqw;
+  display: flex;
+  z-index: 20;
+}
+.key-icon {
+  width: 4cqw;
+  height: 5cqw;
+}
+.mascot-icon {
+  width: 4cqw;
+  height: 5cqw;
+  margin-left: 1cqw;
+}
+.key-enter-animation {
+  animation: growIn 0.5s ease-in-out;
+}
+@keyframes growIn {
+  from {
+    transform: scale(0.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.game-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: #3a3a3a; /* Fallback color */
+  container-type: inline-size;
+  container-name: game-container;
+}
+.character {
+  z-index: 10;
+  position: absolute;
+  width: 9cqw;
+  height: 9cqw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translate(-50%, -60%);
+}
+.destination-hotspot {
+  position: absolute;
+  width: 4cqw;
+  height: 4cqw;
+  border-radius: 50%;
+  transform: translate(-50%, -10%);
+  transition: all 0.3s ease;
+}
+.destination-hotspot.glowing {
+  background-color: rgba(255, 0, 242, 0.5);
+  box-shadow: 0 0 5px 15px rgba(255, 0, 242, 0.7);
+}
+.d-pad {
+  position: absolute;
+  bottom: 2cqw;
+  left: 2cqw;
+  width: 12cqw;
+  height: 12cqw;
+  display: grid;
+  grid-template-areas:
+    '. up .'
+    'left . right'
+    '. down .';
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5cqw;
+  z-index: 20;
+}
+.d-pad-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 0.5cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  touch-action: manipulation; /* Prevent double tap zoom */
+  color: white;
+  font-size: 2.5cqw;
+  font-weight: bold;
+}
+.d-pad-button:hover,
+.d-pad-button:active {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.d-pad-button.up {
+  grid-area: up;
+}
+.d-pad-button.down {
+  grid-area: down;
+}
+.d-pad-button.left {
+  grid-area: left;
+}
+.d-pad-button.right {
+  grid-area: right;
+}
+.info-sign {
+  position: absolute;
+  top: 69%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 50cqw;
+  height: 18cqw;
+  object-fit: contain; /* Ensures the image fits within the bounds */
+}
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+.dialog-content {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  background: white;
+  border-radius: 5px;
+  color: black;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 60%;
+  height: 76%;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dialog-content h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-family: 'Jersey 10', sans-serif;
+}
+.dialog-content iframe {
+  width: 100%;
+  flex-grow: 1;
+  border: none;
+  border-radius: 8px;
+}
+.close-button {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  border: none;
+  background-color: #5c44e4;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+.close-button:hover {
+  background-color: #8514f5;
+}
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  padding: 5px;
+  line-height: 1;
+}
+.close-icon:hover {
+  color: #000;
+}
+.explore-button {
+  position: absolute;
+  bottom: 2cqw;
+  right: 2cqw;
+  padding: 1.5cqw 3cqw;
+  background-color: #e90464;
+  color: white;
+  border: 2px solid white; /* White border */
+  border-radius: 1cqw;
+  font-size: 2cqw;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.explore-button:hover {
+  background-color: #c20354;
+}
+/* When activeDestination() is true, the button is in the DOM */
+@if (activeDestination()) {
+  .explore-button {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

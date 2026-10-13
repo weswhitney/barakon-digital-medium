@@ -1,0 +1,108 @@
+<div class="game-container" [style.background-image]="'url(assets/images/art.png)'">
+  <!-- Keys -->
+  <div class="keys-container">
+    @for (key of keysToShow(); track key) {
+      <img src="assets/images/key.png" class="key-icon" animate.enter="key-enter-animation" />
+    }
+    @if (showMascot()) {
+      <img
+        src="assets/images/barakon.png"
+        class="mascot-icon"
+        animate.enter="key-enter-animation"
+      />
+    }
+  </div>
+  <!-- Character -->
+  @if (!isDialogOpen()) {
+    <div
+      class="character"
+      [style.left.%]="characterXPercent()"
+      [style.top.%]="characterYPercent()"
+      [style.background-image]="'url(' + characterImageUrl() + ')'"
+    ></div>
+  }
+  <!-- Destinations -->
+  @for (dest of destinations(); track dest.id) {
+    <div
+      class="destination-hotspot"
+      [style.left.%]="dest.position.x * 100"
+      [style.top.%]="dest.position.y * 100"
+      [class.glowing]="activeDestination()?.id === dest.id"
+    ></div>
+  }
+  <!-- D-Pad Controls -->
+  <div class="d-pad">
+    <button
+      class="d-pad-button up"
+      (mousedown)="handleButtonPress('ArrowUp')"
+      (mouseup)="handleButtonRelease('ArrowUp')"
+      (mouseleave)="handleButtonRelease('ArrowUp')"
+      (touchstart)="handleButtonPress('ArrowUp')"
+      (touchend)="handleButtonRelease('ArrowUp')"
+    >
+      &#x25B2;
+    </button>
+    <button
+      class="d-pad-button left"
+      (mousedown)="handleButtonPress('ArrowLeft')"
+      (mouseup)="handleButtonRelease('ArrowLeft')"
+      (mouseleave)="handleButtonRelease('ArrowLeft')"
+      (touchstart)="handleButtonPress('ArrowLeft')"
+      (touchend)="handleButtonRelease('ArrowLeft')"
+    >
+      &#x25C0;
+    </button>
+    <button
+      class="d-pad-button right"
+      (mousedown)="handleButtonPress('ArrowRight')"
+      (mouseup)="handleButtonRelease('ArrowRight')"
+      (mouseleave)="handleButtonRelease('ArrowRight')"
+      (touchstart)="handleButtonPress('ArrowRight')"
+      (touchend)="handleButtonRelease('ArrowRight')"
+    >
+      &#x25B6;
+    </button>
+    <button
+      class="d-pad-button down"
+      (mousedown)="handleButtonPress('ArrowDown')"
+      (mouseup)="handleButtonRelease('ArrowDown')"
+      (mouseleave)="handleButtonRelease('ArrowDown')"
+      (touchstart)="handleButtonPress('ArrowDown')"
+      (touchend)="handleButtonRelease('ArrowDown')"
+    >
+      &#x25BC;
+    </button>
+  </div>
+  <!-- Dialog Box -->
+  @if (isDialogOpen()) {
+    <div class="dialog-overlay" (click)="closeDialog()">
+      <div class="dialog-content" (click)="$event.stopPropagation()">
+        <button class="close-icon" (click)="closeDialog()">&times;</button>
+        <h2>{{ activeDestination()?.display }}</h2>
+        @if (safeVideoUrl(); as url) {
+          <iframe
+            credentialless
+            [src]="url"
+            frameborder="0"
+            allow="
+              accelerometer;
+              autoplay;
+              clipboard-write;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+              web-share;
+              compute-pressure;
+            "
+            allowfullscreen
+          ></iframe>
+        }
+        <button class="close-button" (click)="closeDialog()">Close</button>
+      </div>
+    </div>
+  }
+  <!-- Explore Button -->
+  @if (activeDestination() && (activeDestination()?.id !== 'd4' || allKeysCollected())) {
+    <button class="explore-button" (click)="isDialogOpen.set(true)">Enter</button>
+  }
+</div>
